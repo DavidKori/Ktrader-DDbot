@@ -1,0 +1,42 @@
+@use 'components/shared/styles/devices' as *;
+
+.loss-threshold-warning-dialog {
+    &__body-text {
+        font-size: 1.5rem;
+        line-height: 18px;
+        margin: 12px 0;
+        margin-bottom: 22px;
+        color: var(--text-general);
+    }
+
+    &.dc-dialog__wrapper--has-portal {
+        background-color: var(--overlay-outside-dialog);
+    }
+
+    .dc-dialog {
+        &__header {
+            &--title {
+                max-width: 90%;
+            }
+        }
+
+        &__footer {
+            @include mobile-or-tablet-screen {
+                display: flex;
+                width: 100%;
+            }
+        }
+
+        &__button {
+            @include mobile-screen {
+                margin-inline-start: 0;
+            }
+        }
+
+        &__dialog {
+            .dc-checkbox__box {
+                margin: 0 8px 0 0;
+            }
+        }
+    }
+}

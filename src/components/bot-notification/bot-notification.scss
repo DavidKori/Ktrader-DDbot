@@ -1,0 +1,93 @@
+@use 'components/shared/styles/devices' as *;
+
+.Toastify {
+    &__toast {
+        background: var(--icon-black-plus);
+        color: var(--general-main-1);
+        min-height: 4.8rem;
+        height: 4.8rem;
+        width: fit-content;
+        text-align: start;
+        padding: 0.8rem;
+        padding-inline-start: 1.6rem;
+        border-radius: 0.8rem;
+        font-size: 1.4rem;
+        font-family: inherit;
+
+        @include mobile-or-tablet-screen {
+            height: 4.4rem;
+            min-height: 4.4rem;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.8rem, 1rem;
+        }
+
+        &-container {
+            padding: 0;
+            width: auto;
+            inset-inline-start: 3.5rem;
+            bottom: 6rem;
+
+            @include mobile-or-tablet-screen {
+                inset-inline-start: 0;
+                bottom: 9rem;
+                padding: 0.8rem;
+            }
+        }
+
+        &-body {
+            padding: 0;
+            height: 100%;
+        }
+    }
+
+    &__close-button {
+        padding: 0.5rem 0;
+        margin-inline-start: 1.2rem;
+        opacity: 0.8;
+
+        @include mobile-or-tablet-screen {
+            margin-inline-start: 1.2rem;
+        }
+
+        svg {
+            fill: var(--general-main-1);
+            height: 2.2rem;
+            width: 16px;
+
+            @include mobile-or-tablet-screen {
+                height: 1.6rem;
+            }
+        }
+    }
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+
+    button {
+        background: var(--icon-black-plus);
+        color: var(--general-main-1);
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-inline-start: 2rem;
+        margin-bottom: 0.2rem;
+        border: 0;
+        padding: 0;
+        text-decoration: underline;
+        cursor: pointer;
+        word-break: keep-all;
+
+        @include mobile-or-tablet-screen {
+            font-size: 1.2rem;
+            margin-inline-start: 1.2rem;
+        }
+    }
+}
+
+.error-toast {
+    background: var(--button-primary-default);
+    color: var(--text-colored-background);
+}

@@ -1,0 +1,293 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
+.app-header {
+    &__account-settings {
+        padding-inline-end: 1.2rem;
+        border-inline-end: 0.1rem solid var(--general-section-1);
+    }
+
+    &__account-settings,
+    .notifications__wrapper,
+    &__menu {
+        svg > path,
+        svg > g > path {
+            fill: var(--text-prominent);
+        }
+    }
+}
+
+.account-switcher {
+    &__item {
+        .deriv-account-switcher-item {
+            padding: 0.6rem 1.6rem;
+
+            &__detail {
+                .deriv-account-switcher-item__currency {
+                    margin-bottom: 2px;
+                    font-size: 1.4rem;
+                }
+            }
+
+            &__icon {
+                margin-right: unset;
+                margin-inline-end: 10px;
+            }
+        }
+
+        &--disabled {
+            opacity: 0.32;
+        }
+    }
+
+    &__separator:after {
+        background-color: var(--general-section-2);
+        content: '';
+        height: 4px;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+    }
+
+    &-footer {
+        background: var(--general-main-1);
+
+        &__actions {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            background-color: var(--du-general-main-2);
+            padding: 1.6rem 0.8rem;
+
+            &--hide-manage-button {
+                justify-content: flex-end;
+            }
+
+            .manage-button {
+                background: none;
+                border: 1px solid var(--button-secondary-default);
+                margin-inline-end: 0.7rem;
+                height: auto;
+                padding: 0.4rem 1.2rem;
+                white-space: break-spaces;
+
+                &:hover {
+                    background-color: unset !important;
+                }
+
+                span {
+                    color: var(--text-prominent);
+                    font-size: var(--text-size-xs);
+                    cursor: pointer;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
+.derivs-secondary-tabs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--general-main-1);
+
+    .derivs-text__size--md {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.deriv-account-switcher {
+    &-item {
+        &__balance {
+            button {
+                border-width: 1px;
+                height: 2.4rem;
+                min-width: 4.8rem;
+
+                span {
+                    color: var(--text-prominent) !important;
+                }
+            }
+        }
+    }
+
+    &__button {
+        margin-inline-end: 0.8rem;
+
+        @include mobile-or-tablet-screen {
+            margin-inline-end: 0;
+        }
+
+        .deriv-context-menu {
+            box-shadow: 0 0 2px 0 var(--du-shadow-box, #00000014);
+        }
+
+        .deriv-account-switcher__balance + svg > path {
+            fill: var(--text-general);
+        }
+
+        &:hover {
+            background-color: unset;
+        }
+    }
+
+    &__currency {
+        margin-bottom: 2px;
+    }
+
+    &__icon {
+        margin-right: 7px;
+    }
+
+    &__balance {
+        padding: 0 1rem 0.1rem 0;
+    }
+
+    &__list {
+        &.account-switcher-panel {
+            padding: 0.4rem 0.8rem 0;
+
+            .account-switcher-panel__no-eu-accounts {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .add-button {
+                    background: none;
+
+                    span {
+                        color: #000;
+                        font-size: 12px;
+                        border: solid 2px var(--text-disabled-1);
+                        padding: 0.1rem 1.6rem;
+                        border-radius: 0.5em;
+                        cursor: pointer;
+                    }
+                }
+
+                .deriv-account-switcher-item {
+                    background: none;
+                }
+            }
+        }
+
+        .deriv-accordion {
+            &__content {
+                background: unset;
+                overflow: auto;
+            }
+
+            &__text {
+                margin-top: 0;
+            }
+
+            &__icon {
+                margin-left: unset;
+                margin-inline-start: auto;
+            }
+        }
+    }
+
+    &__title {
+        height: 4rem;
+        margin: 0 auto;
+        padding: 1.2rem 0.6rem;
+    }
+
+    &__container--mobile {
+        min-height: auto;
+        max-width: 600px;
+    }
+
+    &__container {
+        max-height: 80vh;
+        overflow: auto;
+        background: var(--general-main-1);
+        background-color: var(--general-main-2);
+        border-radius: 4px;
+        box-shadow: 0 8px 16px 0 var(--shadow-menu) !important;
+        position: absolute;
+        transition:
+            transform 0.3s ease,
+            opacity 0.25s linear;
+        width: 320px;
+        top: 55px;
+        right: unset;
+        inset-inline-end: 0;
+    }
+
+    &__logout {
+        align-items: center;
+        display: flex;
+        grid-column: 2 / 3;
+        justify-content: flex-end;
+        justify-self: end;
+        padding: 1.6em 1.3em;
+
+        &-text {
+            margin-inline-end: 1rem;
+            font-size: var(--text-size-xs);
+        }
+
+        &--loader {
+            display: flex;
+            justify-content: flex-end;
+            padding: 16px;
+        }
+    }
+
+    &__tradershub-link {
+        background: var(--du-general-main-2);
+        color: var(--text-prominent);
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__footer {
+        padding: 0;
+        display: block;
+    }
+}
+
+.languages-modal {
+    background: var(--general-section-1);
+
+    .deriv-modal__header {
+        border-bottom: 2px solid var(--general-section-5);
+    }
+
+    .deriv-modal__close-icon {
+        path {
+            fill: var(--text-prominent);
+        }
+    }
+
+    .deriv-text {
+        color: var(--text-prominent) !important;
+    }
+}
+
+.auth-actions {
+    display: flex;
+    padding-block: 8px;
+
+    button {
+        font-weight: 400;
+        margin-inline-end: 1.6rem;
+    }
+}
+
+.deposit-button,
+.manage-funds-button {
+    margin-inline-end: 1.6rem;
+}
+
+.deriv-accordion--underline {
+    border-bottom: none;
+}

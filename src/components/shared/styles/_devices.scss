@@ -1,0 +1,110 @@
+/**
+ * Define Breakpoints here.
+ */
+$mobile-width: 320px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+$min-desktop-width: 1280px;
+$max-mobile-width: 767px;
+
+@mixin tablet {
+    @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$desktop-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-down {
+    @media (max-width: #{$tablet-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media (min-width: #{$tablet-width}) {
+        @content;
+    }
+}
+
+@mixin mobile-up {
+    @media (min-width: #{$mobile-width}) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$tablet-width - 1}) {
+        @content;
+    }
+}
+
+@mixin mobile-landscape {
+    @media only screen and (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1}) and (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin touch-device {
+    // add css interaction media query to detect touch devices
+    // refer to: https://caniuse.com/#feat=css-media-interaction
+    @media (pointer: coarse) {
+        @content;
+    }
+}
+
+@mixin mobile-tablet-mix {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1px}) {
+        @content;
+    }
+}
+
+/** Need to add new breakpoints for mixins */
+$max-mobile-width: 600px;
+$min-desktop-width: 1280px;
+
+@mixin mobile-screen {
+    @media (max-width: #{$max-mobile-width}) {
+        @content;
+    }
+}
+
+@mixin tablet-screen {
+    @media (min-width: #{$max-mobile-width + 1}) and (max-width: #{$min-desktop-width - 1}) {
+        @content;
+    }
+}
+
+@mixin desktop-screen {
+    @media (min-width: #{$min-desktop-width}) {
+        @content;
+    }
+}
+
+@mixin mobile-or-tablet-screen {
+    @media (max-width: #{$min-desktop-width - 1}) {
+        @content;
+    }
+}
+
+@mixin tablet-or-desktop-screen {
+    @media (min-width: #{$max-mobile-width + 1}) {
+        @content;
+    }
+}
+
+@mixin tablet-portrait-screen {
+    @media (min-width: #{$max-mobile-width + 1}) and (max-width: #{$min-desktop-width - 1}) and (orientation: portrait) {
+        @content;
+    }
+}
+
+@mixin mobile-or-tablet-landscape {
+    @media only screen and (max-width: #{$min-desktop-width - 1}) and (orientation: landscape) {
+        @content;
+    }
+}
