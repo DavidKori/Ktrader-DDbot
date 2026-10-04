@@ -19,7 +19,7 @@ type HydrationState = 'IDLE' | 'HYDRATING' | 'READY';
  * from `accountsList`, flashing `setIsSingleLoggingIn(true)` *before*
  * `/api/deriv/me` had a chance to populate `accountsList`, which caused the
  * infinite login → logout → login loop visible in
- * `tradewithkenbots.vercel.app`'s service worker navigation log.
+ * `Ktradersbots.vercel.app`'s service worker navigation log.
  */
 export const useOauth2 = ({
     handleLogout,

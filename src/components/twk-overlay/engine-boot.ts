@@ -1,5 +1,5 @@
 /**
- * TradeWithKen Engine Bootstrap
+ * Ktraders Engine Bootstrap
  * =============================
  * Instantiates the Orchestrator lazily on first user click ("Start Auto-Trade")
  * and pins it to `window.__TWK_ENGINE__`. Publishes every orchestrator event
@@ -21,13 +21,17 @@ const ENG_KEY = '__TWK_ENGINE__';
 const BUS_KEY = '__TWK_BUS__';
 const STAKE_KEY = 'twkBaseStake';
 
-function bus(): any { return (window as any)[BUS_KEY]; }
+function bus(): any {
+    return (window as any)[BUS_KEY];
+}
 
 function publish(payload: { type: string; message?: string; [k: string]: any }) {
     try {
         const b = bus();
         if (b?.publish) b.publish({ ...payload, ts: Date.now() });
-    } catch { /* noop */ }
+    } catch {
+        /* noop */
+    }
 }
 
 /**
@@ -56,17 +60,17 @@ export function getOrCreateEngine(): Orchestrator {
         // WebSocket endpoint used by the live trading transport.
         appId: getAppId(),
         baseStake,
-        symbols: [
-            'frxEURUSD', 'frxGBPUSD', 'frxUSDJPY', 'frxAUDUSD',
-            'R_100', 'R_75', '1HZ100V',
-        ],
+        symbols: ['frxEURUSD', 'frxGBPUSD', 'frxUSDJPY', 'frxAUDUSD', 'R_100', 'R_75', '1HZ100V'],
         pollMs: 4000,
     });
 
     eng.listeners.add(ev => {
         publish({
-            type: ev.type, symbol: ev.symbol, message: ev.message,
-            pnl: ev.pnl, data: ev.data,
+            type: ev.type,
+            symbol: ev.symbol,
+            message: ev.message,
+            pnl: ev.pnl,
+            data: ev.data,
         });
     });
 
@@ -119,7 +123,11 @@ export function installEngineHook(): void {
                 // otherwise trades would route to the previous account.
                 if ((eng as any).running) {
                     publish({ type: 'log', message: 'auth changed — reconnecting engine with new token' });
-                    try { await eng.stop(); } catch { /* ignore */ }
+                    try {
+                        await eng.stop();
+                    } catch {
+                        /* ignore */
+                    }
                 }
                 publish({
                     type: 'log',
@@ -169,7 +177,11 @@ export function installEngineHook(): void {
                 eng.token = token;
                 if (eng.running) {
                     publish({ type: 'log', message: 'auth changed — reconnecting before manual order' });
-                    try { await eng.stop(); } catch { /* ignore */ }
+                    try {
+                        await eng.stop();
+                    } catch {
+                        /* ignore */
+                    }
                 }
             }
 
@@ -201,7 +213,9 @@ export function installEngineHook(): void {
             eng.autoEnabled = eng.autoEnabled || new Map<string, boolean>();
             eng.autoEnabled.set(symbol, mode === 'AUTO');
             publish({ type: 'log', symbol, message: `mode=${mode}` });
-        } catch { /* ignore */ }
+        } catch {
+            /* ignore */
+        }
     };
 
     // Subscribe to bus so button clicks (engine_start / engine_stop events) drive the engine
@@ -209,7 +223,7 @@ export function installEngineHook(): void {
     if (b?.subscribe) {
         b.subscribe(async (ev: any) => {
             if (ev.type === 'engine_start') await w.__TWK_START__();
-            if (ev.type === 'engine_stop')  await w.__TWK_STOP__();
+            if (ev.type === 'engine_stop') await w.__TWK_STOP__();
         });
     }
 

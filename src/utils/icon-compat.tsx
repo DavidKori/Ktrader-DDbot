@@ -1,5 +1,5 @@
 /**
- * TradeWithKen icon compatibility layer.
+ * Ktraders icon compatibility layer.
  *
  * The upstream D-Bot source historically exposed a string-based `Icon`
  * component (for example `IcAdd`, `IcChevronRight`, `ic-deriv`). During the
@@ -53,8 +53,7 @@ const colorMap: Record<string, string> = {
     general: 'var(--text-general)',
 };
 
-const getFill = (color?: string, customColor?: string) =>
-    customColor || (color ? colorMap[color] || color : undefined);
+const getFill = (color?: string, customColor?: string) => customColor || (color ? colorMap[color] || color : undefined);
 
 const getDimension = (value: number | string | undefined, fallback: number) => {
     if (typeof value === 'number') return value;
@@ -100,13 +99,7 @@ const commonProps = (props: IconProps) => {
  * not have a one-to-one Quill export. They keep the UI functional without
  * reintroducing the removed icon package.
  */
-const LegacyIllustration = ({
-    kind,
-    props,
-}: {
-    kind: 'migrate' | 'blockly';
-    props: IconProps;
-}) => {
+const LegacyIllustration = ({ kind, props }: { kind: 'migrate' | 'blockly'; props: IconProps }) => {
     const size = getSize(props.size);
     const stroke = getFill(props.color, props.custom_color) || 'currentColor';
     const svgProps = {

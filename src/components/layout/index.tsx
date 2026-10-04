@@ -16,7 +16,7 @@ import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
-import TradeWithKenOverlay from '@/components/twk-overlay/TradeWithKenOverlay';
+import KtradersOverlay from '@/components/twk-overlay/KtradersOverlay';
 
 const Layout = observer(() => {
     const { isDesktop } = useDevice();
@@ -24,7 +24,10 @@ const Layout = observer(() => {
     const store = useStore();
     const is_quick_strategy_active = store?.quick_strategy?.is_open;
 
-    const isCallbackPage = window.location.pathname === '/callback' || window.location.pathname === '/oauth/callback' || window.location.pathname === '/auth/deriv/callback';
+    const isCallbackPage =
+        window.location.pathname === '/callback' ||
+        window.location.pathname === '/oauth/callback' ||
+        window.location.pathname === '/auth/deriv/callback';
     const { onRenderTMBCheck, is_tmb_enabled: tmb_enabled_from_hook, isTmbEnabled } = useTMB();
     const is_tmb_enabled = useMemo(
         () => window.is_tmb_enabled === true || tmb_enabled_from_hook,
@@ -238,8 +241,8 @@ const Layout = observer(() => {
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}
             <PWAUpdateNotification />
-            {/* TradeWithKen AI — floating overlay (auto-anchors, self-resurrects) */}
-            <TradeWithKenOverlay />
+            {/* Ktraders AI — floating overlay (auto-anchors, self-resurrects) */}
+            <KtradersOverlay />
         </div>
     );
 });

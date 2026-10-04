@@ -6,10 +6,16 @@ import { installEngineHook } from './components/twk-overlay/engine-boot';
 import './styles/index.scss';
 
 AnalyticsInitializer();
-// TradeWithKen — install engine hook so overlay "Start Auto-Trade" boots orchestrator
+// Ktraders — install engine hook so overlay "Start Auto-Trade" boots orchestrator
 if (typeof window !== 'undefined') {
     // Defer until DOM ready so window/document/localStorage are all present
-    setTimeout(() => { try { installEngineHook(); } catch (e) { console.warn('[TWK] engine-hook install failed', e); } }, 0);
+    setTimeout(() => {
+        try {
+            installEngineHook();
+        } catch (e) {
+            console.warn('[TWK] engine-hook install failed', e);
+        }
+    }, 0);
 }
 registerPWA()
     .then(registration => {

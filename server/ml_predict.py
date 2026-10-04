@@ -1,5 +1,5 @@
 """
-LightGBM Inference Service — TradeWithKen
+LightGBM Inference Service — Ktraders
 ==========================================
 Two endpoints:
   POST /predict           direction probability (long-side success)
@@ -33,7 +33,7 @@ except Exception:
 DIRECTION_PATH = Path(os.getenv("LGBM_DIRECTION_MODEL_PATH", "models/direction.txt"))
 DURATION_PATH  = Path(os.getenv("LGBM_DURATION_MODEL_PATH",  "models/duration.txt"))
 
-app = FastAPI(title="TradeWithKen ML Inference")
+app = FastAPI(title="Ktraders ML Inference")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], allow_credentials=False,

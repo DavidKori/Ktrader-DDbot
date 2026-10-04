@@ -17,16 +17,15 @@ import type { ScanResult } from '../scanner/market-scanner';
 
 export interface XMLStrategyInputs {
     symbol: string;
-    contractType: 'CALL' | 'PUT' | 'DIGITMATCH' | 'DIGITDIFF' | 'DIGITOVER' | 'DIGITUNDER' |
-                  'MULTUP' | 'MULTDOWN';
+    contractType: 'CALL' | 'PUT' | 'DIGITMATCH' | 'DIGITDIFF' | 'DIGITOVER' | 'DIGITUNDER' | 'MULTUP' | 'MULTDOWN';
     stake: number;
-    durationTicks?: number;          // for binary
-    barrier?: number;                 // for OVER/UNDER
-    targetDigit?: number;             // for MATCH/DIFF
-    martingaleMultiplier?: number;    // optional safety recovery (1 = no martingale)
-    takeProfit?: number;              // USD
-    stopLoss?: number;                // USD
-    currency?: string;                // 'USD'
+    durationTicks?: number; // for binary
+    barrier?: number; // for OVER/UNDER
+    targetDigit?: number; // for MATCH/DIFF
+    martingaleMultiplier?: number; // optional safety recovery (1 = no martingale)
+    takeProfit?: number; // USD
+    stopLoss?: number; // USD
+    currency?: string; // 'USD'
     botName?: string;
 }
 
@@ -54,36 +53,40 @@ const variables = (): string => `
  * (lowercase strings exactly as DBot expects).
  */
 const tradeDefMap: Record<XMLStrategyInputs['contractType'], { type: string; cat: string }> = {
-    CALL:        { type: 'callput', cat: 'higherlower'  },
-    PUT:         { type: 'callput', cat: 'higherlower'  },
-    DIGITMATCH:  { type: 'digits',  cat: 'matchesdiffers' },
-    DIGITDIFF:   { type: 'digits',  cat: 'matchesdiffers' },
-    DIGITOVER:   { type: 'digits',  cat: 'overunder'      },
-    DIGITUNDER:  { type: 'digits',  cat: 'overunder'      },
-    MULTUP:      { type: 'multiplier', cat: 'multiplier'  },
-    MULTDOWN:    { type: 'multiplier', cat: 'multiplier'  },
+    CALL: { type: 'callput', cat: 'higherlower' },
+    PUT: { type: 'callput', cat: 'higherlower' },
+    DIGITMATCH: { type: 'digits', cat: 'matchesdiffers' },
+    DIGITDIFF: { type: 'digits', cat: 'matchesdiffers' },
+    DIGITOVER: { type: 'digits', cat: 'overunder' },
+    DIGITUNDER: { type: 'digits', cat: 'overunder' },
+    MULTUP: { type: 'multiplier', cat: 'multiplier' },
+    MULTDOWN: { type: 'multiplier', cat: 'multiplier' },
 };
 
 const purchaseLabel: Record<XMLStrategyInputs['contractType'], string> = {
-    CALL:'CALL', PUT:'PUT',
-    DIGITMATCH:'DIGITMATCH', DIGITDIFF:'DIGITDIFF',
-    DIGITOVER:'DIGITOVER',  DIGITUNDER:'DIGITUNDER',
-    MULTUP:'MULTUP', MULTDOWN:'MULTDOWN',
+    CALL: 'CALL',
+    PUT: 'PUT',
+    DIGITMATCH: 'DIGITMATCH',
+    DIGITDIFF: 'DIGITDIFF',
+    DIGITOVER: 'DIGITOVER',
+    DIGITUNDER: 'DIGITUNDER',
+    MULTUP: 'MULTUP',
+    MULTDOWN: 'MULTDOWN',
 };
 
 export const generateXML = (i: XMLStrategyInputs): string => {
     const tp = i.takeProfit ?? 5;
-    const sl = i.stopLoss   ?? 5;
+    const sl = i.stopLoss ?? 5;
     const martingale = i.martingaleMultiplier ?? 1;
     const ccy = i.currency ?? 'USD';
-    const td  = tradeDefMap[i.contractType];
-    const botName = i.botName ?? `TradeWithKen-${i.symbol}-${Date.now()}`;
+    const td = tradeDefMap[i.contractType];
+    const botName = i.botName ?? `Ktraders-${i.symbol}-${Date.now()}`;
     const durationTicks = i.durationTicks ?? 5;
 
     // Prediction value (digit / barrier)
     let predictionValue: number | undefined;
     if (i.contractType === 'DIGITMATCH' || i.contractType === 'DIGITDIFF') predictionValue = i.targetDigit ?? 0;
-    if (i.contractType === 'DIGITOVER'  || i.contractType === 'DIGITUNDER') predictionValue = i.barrier ?? 5;
+    if (i.contractType === 'DIGITOVER' || i.contractType === 'DIGITUNDER') predictionValue = i.barrier ?? 5;
 
     return `<xml xmlns="https://developers.google.com/blockly/xml" is_dbot="true" collection="false">
   <variables>
@@ -140,10 +143,14 @@ export const generateXML = (i: XMLStrategyInputs): string => {
             <field name="VAR" id="stake_var">stake</field>
           </block>
         </value>
-        ${predictionValue !== undefined ? `
+        ${
+            predictionValue !== undefined
+                ? `
         <value name="PREDICTION">
           <shadow type="math_number"><field name="NUM">${esc(predictionValue)}</field></shadow>
-        </value>` : ''}
+        </value>`
+                : ''
+        }
       </block>
     </statement>
 
@@ -240,13 +247,15 @@ export const xmlFromScan = (scan: ScanResult, stake = 1, durationTicks = 5): str
 };
 
 /** Download helper used by the React component. */
-export const downloadXML = (xml: string, fileName = 'tradewithken-strategy.xml') => {
+export const downloadXML = (xml: string, fileName = 'ktraders-strategy.xml') => {
     if (typeof document === 'undefined') return;
     const blob = new Blob([xml], { type: 'application/xml' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url; a.download = fileName;
-    document.body.appendChild(a); a.click();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 };

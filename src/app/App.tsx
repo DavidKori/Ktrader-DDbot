@@ -72,7 +72,7 @@ const router = createBrowserRouter(
             <Route index element={<AppRoot />} />
             <Route path='endpoint' element={<Endpoint />} />
             <Route path='callback' element={<CallbackPage />} />
-            {/* TradeWithKen — Deriv OAuth requires /oauth/callback registered as redirect_uri */}
+            {/* Ktraders — Deriv OAuth requires /oauth/callback registered as redirect_uri */}
             <Route path='oauth/callback' element={<CallbackPage />} />
             <Route path='free-bots' element={<FreeBots />} />
             <Route path='analysis-tool' element={<AnalysisTool />} />
