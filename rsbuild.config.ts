@@ -41,7 +41,7 @@ export default defineConfig({
                 RUDDERSTACK_KEY: JSON.stringify(process.env.RUDDERSTACK_KEY),
                 GROWTHBOOK_CLIENT_KEY: JSON.stringify(process.env.GROWTHBOOK_CLIENT_KEY),
                 GROWTHBOOK_DECRYPTION_KEY: JSON.stringify(process.env.GROWTHBOOK_DECRYPTION_KEY),
-                // TradeWithKen — runtime Deriv app/client identifier.
+                // Ktraders — runtime Deriv app/client identifier.
                 DERIV_APP_ID: JSON.stringify(process.env.DERIV_APP_ID),
                 // OAuth 2.0 client_id. Kept separate from the legacy numeric app id.
                 DERIV_OAUTH_APP_ID: JSON.stringify(process.env.DERIV_OAUTH_APP_ID),
@@ -117,4 +117,8 @@ export default defineConfig({
             },
         },
     },
+    base: '/Ktrader-DDbot/',
+    mode: 'production',
+    minify: true,
+    sourcemap: true,
 });
