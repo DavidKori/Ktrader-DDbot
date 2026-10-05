@@ -8,7 +8,8 @@
 //         : '';
 //console.log('configuredProxyBase', configuredProxyBase, 'runtimeOrigin', runtimeOrigin);
 //export const PROXY_BASE = configuredProxyBase || runtimeOrigin || 'http://localhost:3001';
-export const PROXY_BASE = 'https://ktrader-ddbot.onrender.com';
+//export const PROXY_BASE = 'https://ktrader-ddbot.onrender.com';
+export const PROXY_BASE = 'https://server-node-lake.vercel.app';
 
 const configuredDerivWsUrl =
     typeof process !== 'undefined' && (process as any).env?.PUBLIC_DERIV_WS_URL
