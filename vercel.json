@@ -3,7 +3,6 @@
   "services": {
     "app": {
       "root": ".",
-      "framework": "express",
       "buildCommand": "npm run build",
       "outputDirectory": "dist"
     },
