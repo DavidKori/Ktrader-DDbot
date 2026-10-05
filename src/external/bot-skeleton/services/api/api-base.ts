@@ -155,7 +155,6 @@ class APIBase {
             this.init(true);
         }
     };
-
     async authorizeAndSubscribe() {
         const token = V2GetActiveToken();
         if (!token || !this.api) return;
@@ -165,29 +164,32 @@ class APIBase {
         setIsAuthorized(false);
 
         try {
-            const { authorize, error } = await this.api.authorize(this.token);
-            if (error) {
-                if (error.code === 'InvalidToken') {
-                    const is_tmb_enabled = window.is_tmb_enabled === true;
-                    if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
-                        globalObserver.emit('InvalidToken', { error });
-                    } else {
-                        clearAuthData();
-                    }
-                } else {
-                    console.error('Authorization error:', error);
-                }
-                setIsAuthorizing(false);
-                return error;
+            // The socket is already authenticated via the OTP URL, so we do NOT call
+            // this.api.authorize(). Account details come from our own server instead.
+            const meRes = await fetch('/api/deriv/me', { credentials: 'include' });
+            if (!meRes.ok) {
+                const err: any = { error: { code: 'AuthRequired', message: `session check failed (${meRes.status})` } };
+                throw err;
             }
+            const me = await meRes.json();
+            const accounts = me.account_list ?? [];
+            const active = accounts.find((a: any) => a.loginid === me.active_loginid) ?? accounts[0];
+
+            // Shape kept close to the old `authorize` response so downstream code keeps working.
+            const authorize = {
+                loginid: me.active_loginid,
+                currency: me.currency,
+                balance: active?.balance,
+                account_list: accounts,
+            };
 
             this.account_info = authorize;
-            setAccountList(authorize?.account_list || []);
+            setAccountList(authorize.account_list);
             setAuthData(authorize);
             setIsAuthorized(true);
             this.is_authorized = true;
-            localStorage.setItem('client_account_details', JSON.stringify(authorize?.account_list));
-            localStorage.setItem('client.country', authorize?.country);
+            localStorage.setItem('client_account_details', JSON.stringify(authorize.account_list));
+            // `country` is not returned by the new API, so we no longer store it.
 
             if (this.has_active_symbols) {
                 this.toggleRunButton(false);
@@ -195,17 +197,70 @@ class APIBase {
                 this.active_symbols_promise = this.getActiveSymbols();
             }
             this.subscribe();
-            // this.getSelfExclusion(); commented this so we dont call it from two places
-        } catch (e) {
-            console.error('Authorization failed:', e);
+        } catch (e: any) {
+            console.error('Authorization failed:', e?.error?.code ?? '', e?.error?.message ?? e);
             this.is_authorized = false;
-            clearAuthData();
             setIsAuthorized(false);
+            // Deliberately NOT calling clearAuthData() here: wiping auth on any error is
+            // what fed the reload loop. Only clear it when the server says we're logged out.
+            if (e?.error?.code === 'AuthRequired') {
+                clearAuthData();
+            }
             globalObserver.emit('Error', e);
         } finally {
             setIsAuthorizing(false);
         }
     }
+    // async authorizeAndSubscribe() {
+    //     const token = V2GetActiveToken();
+    //     if (!token || !this.api) return;
+    //     this.token = token;
+    //     this.account_id = V2GetActiveClientId() ?? '';
+    //     setIsAuthorizing(true);
+    //     setIsAuthorized(false);
+
+    //     try {
+    //         const { authorize, error } = await this.api.authorize(this.token);
+    //         if (error) {
+    //             if (error.code === 'InvalidToken') {
+    //                 const is_tmb_enabled = window.is_tmb_enabled === true;
+    //                 if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
+    //                     globalObserver.emit('InvalidToken', { error });
+    //                 } else {
+    //                     clearAuthData();
+    //                 }
+    //             } else {
+    //                 console.error('Authorization error:', error);
+    //             }
+    //             setIsAuthorizing(false);
+    //             return error;
+    //         }
+
+    //         this.account_info = authorize;
+    //         setAccountList(authorize?.account_list || []);
+    //         setAuthData(authorize);
+    //         setIsAuthorized(true);
+    //         this.is_authorized = true;
+    //         localStorage.setItem('client_account_details', JSON.stringify(authorize?.account_list));
+    //         localStorage.setItem('client.country', authorize?.country);
+
+    //         if (this.has_active_symbols) {
+    //             this.toggleRunButton(false);
+    //         } else {
+    //             this.active_symbols_promise = this.getActiveSymbols();
+    //         }
+    //         this.subscribe();
+    //         // this.getSelfExclusion(); commented this so we dont call it from two places
+    //     } catch (e) {
+    //         console.error('Authorization failed:', e);
+    //         this.is_authorized = false;
+    //         clearAuthData();
+    //         setIsAuthorized(false);
+    //         globalObserver.emit('Error', e);
+    //     } finally {
+    //         setIsAuthorizing(false);
+    //     }
+    // }
 
     async getSelfExclusion() {
         if (!this.api || !this.is_authorized) return;

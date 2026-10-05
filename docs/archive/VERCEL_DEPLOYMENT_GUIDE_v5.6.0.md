@@ -36,7 +36,7 @@ Set these in Vercel Production:
 
 ```text
 NODE_ENV=production
-DERIV_APP_ID=33tDyOr00nQjiUbISnUBK
+DERIV_APP_ID=34z6baeU5GtDZVWiVfpXE
 
 # Current Deriv portal configuration: OAuth App ID and WebSocket app_id use the same alphanumeric application identifier.
 DERIV_OAUTH_APP_ID=<OAuth client id>
@@ -160,11 +160,11 @@ WebSockets on Vercel require Fluid Compute to be enabled for the project.
 
 `server-node/risk-store.js` replaces the old `const riskStates = new Map()`:
 
-| Backend | Trigger | Scope |
-| --- | --- | --- |
+| Backend            | Trigger                                               | Scope                                                 |
+| ------------------ | ----------------------------------------------------- | ----------------------------------------------------- |
 | Upstash Redis REST | `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` | shared by all instances — **required for real money** |
-| JSON file | default (`RISK_STATE_FILE`, else tmpdir) | survives restarts on one host |
-| Memory | only if no file path | last resort |
+| JSON file          | default (`RISK_STATE_FILE`, else tmpdir)              | survives restarts on one host                         |
+| Memory             | only if no file path                                  | last resort                                           |
 
 Behaviour:
 

@@ -3,26 +3,26 @@
 ## What was fixed
 
 1. **Removed the Vercel-incompatible browser WebSocket proxy dependency** for the trading/chart client path.
-   - Browser WebSocket traffic is now directed to `wss://ws.derivws.com/websockets/v3`.
-   - OAuth/session HTTP traffic remains same-origin through `/auth/deriv/*` and `/api/deriv/*`.
+    - Browser WebSocket traffic is now directed to `wss://ws.derivws.com/websockets/v3`.
+    - OAuth/session HTTP traffic remains same-origin through `/auth/deriv/*` and `/api/deriv/*`.
 
 2. **Fixed session bootstrap token handling.**
-   - `/api/deriv/me` now returns a browser-usable Deriv authorization token instead of an internal `proxy_<loginid>` placeholder.
-   - This resolves the direct WebSocket `authorize(token)` path for charts, balance, subscriptions, and trading flows.
+    - `/api/deriv/me` now returns a browser-usable Deriv authorization token instead of an internal `proxy_<loginid>` placeholder.
+    - This resolves the direct WebSocket `authorize(token)` path for charts, balance, subscriptions, and trading flows.
 
 3. **Fixed build-time environment wiring.**
-   - Rsbuild now injects `PUBLIC_DERIV_WS_URL` instead of the obsolete `PUBLIC_DERIV_WS_PROXY_URL`.
-   - `.env.example` now documents the direct WebSocket variable correctly.
+    - Rsbuild now injects `PUBLIC_DERIV_WS_URL` instead of the obsolete `PUBLIC_DERIV_WS_PROXY_URL`.
+    - `.env.example` now documents the direct WebSocket variable correctly.
 
 4. **Removed dead server-side WebSocket upgrade code.**
-   - The Vercel deployment no longer carries the obsolete `direct Deriv WebSocket transport` upgrade path.
-   - The remaining server responsibilities are OAuth, session refresh, account discovery, and account selection persistence.
+    - The Vercel deployment no longer carries the obsolete `direct Deriv WebSocket transport` upgrade path.
+    - The remaining server responsibilities are OAuth, session refresh, account discovery, and account selection persistence.
 
 5. **Improved account persistence.**
-   - When the user switches accounts in the UI, the selection is synced back to `/api/deriv/account/select` so reload/bootstrap preserves the chosen account.
+    - When the user switches accounts in the UI, the selection is synced back to `/api/deriv/account/select` so reload/bootstrap preserves the chosen account.
 
 6. **Made session bootstrap authoritative on load.**
-   - The app now attempts `/api/deriv/me` on normal loads to refresh token state from the server-backed session before falling back to cached browser storage.
+    - The app now attempts `/api/deriv/me` on normal loads to refresh token state from the server-backed session before falling back to cached browser storage.
 
 ## Verification completed
 
@@ -35,7 +35,7 @@
 
 At minimum, configure the following on Vercel:
 
-- `DERIV_APP_ID` (WebSocket application identifier; current Deriv portal value: `33tDyOr00nQjiUbISnUBK`)
+- `DERIV_APP_ID` (WebSocket application identifier; current Deriv portal value: `34z6baeU5GtDZVWiVfpXE`)
 - `DERIV_OAUTH_APP_ID`
 - `DERIV_REDIRECT_URI`
 - `FRONTEND_ORIGIN`
@@ -48,13 +48,13 @@ At minimum, configure the following on Vercel:
 
 1. Open the app while logged out.
 2. Start login and confirm:
-   - `/auth/deriv/login` → `302`
-   - `/auth/deriv/callback` → `302`
-   - `/api/deriv/me` → `200` after login
+    - `/auth/deriv/login` → `302`
+    - `/auth/deriv/callback` → `302`
+    - `/api/deriv/me` → `200` after login
 3. In DevTools Network, confirm the browser opens:
-   - `wss://ws.derivws.com/websockets/v3?...`
+    - `wss://ws.derivws.com/websockets/v3?...`
 4. Confirm there is **no** client request to:
-   - `direct Deriv WebSocket transport`
+    - `direct Deriv WebSocket transport`
 5. Confirm balance, active symbols, proposals, and chart/tick updates load after login.
 
 ## Important note
