@@ -1,10 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "app": {
-      "root": ".",
-      "buildCommand": "npm run build",
-      "outputDirectory": "dist"
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/index.mjs": {
+      "runtime": "nodejs22.x"
     }
   },
   "rewrites": [
