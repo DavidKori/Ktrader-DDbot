@@ -1,11 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-    "services": {
+  "services": {
     "app": {
       "root": ".",
-      "framework": "express"
+      "framework": "express",
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist"
     },
     "server-node": {
       "root": "server-node",
@@ -23,4 +23,3 @@
     }
   ]
 }
-
